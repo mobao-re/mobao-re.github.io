@@ -3,119 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>动漫樱花</title>
     <style>
         * {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            box-sizing: border-box
         }
 
         html, body {
             height: 100%;
-            overflow: hidden;
+            overflow: hidden
         }
 
-        /* 核心背景：使用你提供的动漫风格樱花山水图 */
-        .bg {
+        /* 动漫风樱花山水背景（稳定可访问） */
+        .background {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            /* 你指定的图片链接 */
-            background: url("https://th.bing.com/th/id/OIP.ni_O6y1AvIwPSqKLYT8AeQHaEJ?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3") no-repeat center center;
-            background-size: cover; /* 全屏覆盖 */
+            background: url("https://images.unsplash.com/photo-1559825481-12a05cc00344") center/cover no-repeat;
             z-index: -1;
-            filter: brightness(1.1); /* 稍微提亮一点，方便看花瓣 */
         }
 
-        /* 樱花飘落容器 */
+        /* 樱花飘落 */
         #sakura {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none; /* 不阻挡点击 */
+            pointer-events: none;
         }
 
-        /* 樱花花瓣样式 */
         .petal {
             position: absolute;
-            background-color: #ffccee; /* 樱花粉 */
-            border-radius: 50% 0 50% 50%; /* 樱花花瓣形状 */
-            opacity: 0.8;
+            background: #ffdae3;
+            border-radius: 50% 0 50% 50%;
+            opacity: .8;
             animation: fall linear infinite;
         }
 
-        /* 樱花飘落动画 */
         @keyframes fall {
             0% {
-                transform: translateY(-10px) rotate(0deg) scale(0.8);
-                opacity: 0;
+                transform: translateY(-10vh) rotate(0deg);
+                opacity: 0
             }
 
             10% {
-                opacity: 1;
+                opacity: .9
             }
 
             90% {
-                opacity: 1;
+                opacity: .9
             }
 
             100% {
-                transform: translateY(100vh) rotate(360deg) scale(1.2);
-                opacity: 0;
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0
             }
         }
     </style>
 </head>
 <body>
-    <!-- 背景层 -->
-    <div class="bg"></div>
-    <!-- 樱花动画层 -->
+    <div class="background"></div>
     <div id="sakura"></div>
 
     <script>
-        // 生成樱花函数
-        function createSakura() {
-        const container = document.getElementById('sakura');
-        container.innerHTML = ''; // 清空之前的花瓣
-
-        // 根据屏幕大小决定花瓣数量，手机少放点保证流畅
-        const count = window.innerWidth < 768 ? 30 : 60;
-
-        for (let i = 0; i < count; i++) {
-        const petal = document.createElement('div');
-        petal.className = 'petal';
-
-        // 随机参数
-        const size = Math.random() * 10 + 5; // 5-15px
-        const left = Math.random() * 100; // 0-100% 水平位置
-        const duration = Math.random() * 15 + 10; // 10-25秒 飘落速度
-        const delay = Math.random() * 10; // 0-10秒 延迟开始
-
-        // 应用随机样式
-        petal.style.width = `${size}px`;
-        petal.style.height = `${size}px`;
-        petal.style.left = `${left}%`;
-        petal.style.animationDuration = `${duration}s`;
-        petal.style.animationDelay = `${delay}s`;
-
-        // 随机颜色 variation（浅粉/深粉）
-        const r = Math.floor(Math.random() * 30 + 220);
-        const g = Math.floor(Math.random() * 30 + 180);
-        const b = Math.floor(Math.random() * 40 + 200);
-        petal.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
-
-        container.appendChild(petal);
+        function create(){
+        const s=document.getElementById('sakura');
+        s.innerHTML='';
+        const cnt=innerWidth<768?40:70;
+        for(let i=0;i<cnt;i++){
+        const p=document.createElement('div');
+        p.className='petal';
+        const size=Math.random()*12+6;
+        p.style.width=p.style.height=size+'px';
+        p.style.left=Math.random()*100+'%';
+        p.style.animationDuration=(Math.random()*15+10)+'s';
+        p.style.animationDelay=(Math.random()*15)+'s';
+        const r=255,g=Math.floor(Math.random()*50+180),b=Math.floor(Math.random()*50+210);
+        p.style.backgroundColor=`rgb(${r},${g},${b})`;
+        s.appendChild(p);
         }
         }
-
-        // 页面加载和窗口大小改变时重新生成樱花
-        window.addEventListener('load', createSakura);
-        window.addEventListener('resize', createSakura);
+        window.addEventListener('load',create);
+        window.addEventListener('resize',create);
     </script>
 </body>
 </html>
