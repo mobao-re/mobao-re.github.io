@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>唯美樱花背景</title>
+    <title>樱花</title>
     <style>
         * {
             margin: 0;
@@ -14,47 +14,43 @@
         body, html {
             height: 100%;
             overflow: hidden;
-            font-family: "Microsoft YaHei", sans-serif;
         }
 
-        /* 背景容器 - 虚化樱花树 */
-        .sakura-background {
+        /* 高清山水樱花背景 */
+        .bg {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: url("https://p-doubao-search-sign.bytedance.net/labis/da7a96bfbe3148ebdb626b1959b5bf6b~tplv-be4g95zd3a-image.jpeg?lk3s=feb11e32&x-orig-authkey=akbe4g95zd3a&x-orig-expires=1791805716&x-orig-sign=llr2Gfwzms4rl3UnhF37ujz6abs%3D") no-repeat center center;
-            background-size: cover;
-            filter: blur(8px) brightness(0.85);
-            z-index: -1;
-            transform: scale(1.1); /* 轻微放大消除模糊边缘 */
+            width: 100vw;
+            height: 100vh;
+            background: url('https://pic.16pic.com/sucai/2020/16pic_2020601_s.jpg') center/cover no-repeat;
+            z-index: -2;
         }
 
-        /* 樱花飘落动画容器 */
-        .sakura-container {
+        /* 樱花飘落容器 */
+        #sakura {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 0;
+            z-index: 99;
         }
 
-        /* 单个樱花花瓣样式 */
-        .sakura {
+        /* 花瓣样式 */
+        .petal {
             position: absolute;
-            background-color: #ffc0cb;
-            border-radius: 50% 0 50% 50%;
+            background: #ffb6c1;
+            border-radius: 150% 0 150% 150%;
             opacity: 0.8;
-            animation: sakura-fall linear infinite;
+            animation: fall linear infinite;
         }
 
-        /* 樱花飘落动画关键帧 */
-        @keyframes sakura-fall {
+        /* 飘落动画 */
+        @keyframes fall {
             0% {
-                transform: translateY(-10px) rotate(0deg) scale(0.8);
+                transform: translateY(-10vh) rotate(0deg) scale(0.8);
                 opacity: 0;
             }
 
@@ -67,88 +63,52 @@
             }
 
             100% {
-                transform: translateY(100vh) rotate(360deg) scale(1.2);
+                transform: translateY(100vh) rotate(720deg) scale(1.2);
                 opacity: 0;
             }
         }
-
-        /* 内容层 - 可添加文字/组件 */
-        .content {
-            position: relative;
-            z-index: 1;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-align: center;
-            text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-            padding: 20px;
-        }
-
-            .content h1 {
-                font-size: clamp(2.5rem, 5vw, 4rem);
-                margin-bottom: 20px;
-                color: #fdf2f8;
-            }
-
-            .content p {
-                font-size: clamp(1rem, 2vw, 1.5rem);
-                max-width: 600px;
-                line-height: 1.6;
-            }
     </style>
 </head>
-<body>
-    <!-- 虚化背景层 -->
-    <div class="sakura-background"></div>
 
-    <!-- 樱花飘落动画层 -->
-    <div class="sakura-container" id="sakuraContainer"></div>
+<body>
+    <div class="bg"></div>
+    <div id="sakura"></div>
 
     <script>
-        // 生成樱花飘落动画
-        function createSakura() {
-        const container = document.getElementById('sakuraContainer');
-        const sakuraCount = window.innerWidth < 768 ? 30 : 60; // 移动端减少数量
+        // 樱花飘落生成
+        function sakura() {
+        const container = document.getElementById('sakura');
+        const count = window.innerWidth < 768 ? 40 : 70;
+        container.innerHTML = '';
 
-        for (let i = 0; i < sakuraCount; i++) {
-        const sakura = document.createElement('div');
-        sakura.className = 'sakura';
+        for (let i = 0; i < count; i++) {
+        const petal = document.createElement('div');
+        petal.className = 'petal';
 
-        // 随机位置与大小
+        // 随机大小、位置、速度
+        const size = Math.random() * 12 + 6;
         const left = Math.random() * 100;
-        const size = Math.random() * 10 + 5; // 5-15px
-        const duration = Math.random() * 15 + 10; // 10-25s
-        const delay = Math.random() * 10; // 0-10s延迟
+        const dur = Math.random() * 15 + 10;
+        const delay = Math.random() * 15;
 
-        // 设置样式
-        sakura.style.left = `${left}%`;
-        sakura.style.width = `${size}px`;
-        sakura.style.height = `${size}px`;
-        sakura.style.animationDuration = `${duration}s`;
-        sakura.style.animationDelay = `${delay}s`;
+        petal.style.width = size + 'px';
+        petal.style.height = size + 'px';
+        petal.style.left = left + '%';
+        petal.style.animationDuration = dur + 's';
+        petal.style.animationDelay = delay + 's';
 
-        // 随机颜色深浅
-        const opacity = Math.random() * 0.5 + 0.5;
-        const red = Math.floor(Math.random() * 40 + 210);
-        const green = Math.floor(Math.random() * 20 + 190);
-        const blue = Math.floor(Math.random() * 30 + 220);
-        sakura.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
-        sakura.style.opacity = opacity;
+        // 粉色深浅随机
+        const r = Math.floor(Math.random() * 40) + 220;
+        const g = Math.floor(Math.random() * 30) + 180;
+        const b = Math.floor(Math.random() * 30) + 210;
+        petal.style.backgroundColor = `rgb(${r},${g},${b})`;
 
-        container.appendChild(sakura);
+        container.appendChild(petal);
         }
         }
 
-        // 页面加载完成后生成樱花
-        window.addEventListener('load', createSakura);
-        // 窗口大小变化时重新生成（适配响应式）
-        window.addEventListener('resize', () => {
-        document.getElementById('sakuraContainer').innerHTML = '';
-        createSakura();
-        });
+        window.addEventListener('load', sakura);
+        window.addEventListener('resize', sakura);
     </script>
 </body>
 </html>
