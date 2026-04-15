@@ -1,39 +1,161 @@
-<!DOCTYPE html>
-<html>
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-    <meta charset="utf-8">
-    <title>我的网站</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>唯美樱花背景</title>
     <style>
-        /* 旋转唱片样式 */
-        .record {
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            overflow: hidden;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        /* 背景容器 - 虚化樱花树 */
+        .sakura-background {
             position: fixed;
-            right: 20px;
-            bottom: 20px;
-            z-index: 999;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-image: url('https://picsum.photos/id/100/200/200');
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("https://p-doubao-search-sign.bytedance.net/labis/da7a96bfbe3148ebdb626b1959b5bf6b~tplv-be4g95zd3a-image.jpeg?lk3s=feb11e32&x-orig-authkey=akbe4g95zd3a&x-orig-expires=1791805716&x-orig-sign=llr2Gfwzms4rl3UnhF37ujz6abs%3D") no-repeat center center;
             background-size: cover;
-            box-shadow: 0 0 15px rgba(0,0,0,0.5);
-            animation: rotate 8s linear infinite;
-            cursor: pointer;
+            filter: blur(8px) brightness(0.85);
+            z-index: -1;
+            transform: scale(1.1); /* 轻微放大消除模糊边缘 */
         }
-        .record:hover {
-            animation-play-state: paused;
-            transform: scale(1.1);
+
+        /* 樱花飘落动画容器 */
+        .sakura-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
         }
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+
+        /* 单个樱花花瓣样式 */
+        .sakura {
+            position: absolute;
+            background-color: #ffc0cb;
+            border-radius: 50% 0 50% 50%;
+            opacity: 0.8;
+            animation: sakura-fall linear infinite;
         }
+
+        /* 樱花飘落动画关键帧 */
+        @keyframes sakura-fall {
+            0% {
+                transform: translateY(-10px) rotate(0deg) scale(0.8);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(360deg) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        /* 内容层 - 可添加文字/组件 */
+        .content {
+            position: relative;
+            z-index: 1;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+        }
+
+            .content h1 {
+                font-size: clamp(2.5rem, 5vw, 4rem);
+                margin-bottom: 20px;
+                color: #fdf2f8;
+            }
+
+            .content p {
+                font-size: clamp(1rem, 2vw, 1.5rem);
+                max-width: 600px;
+                line-height: 1.6;
+            }
     </style>
 </head>
-<body style="background:#222;color:#fff;font-size:24px;text-align:center;padding-top:100px;">
-    <h1>这是我的网页</h1>
-    <p>别人可以通过网址访问我啦</p>
+<body>
+    <!-- 虚化背景层 -->
+    <div class="sakura-background"></div>
 
-    <!-- 右下角旋转唱片 -->
-    <div class="record"></div>
+    <!-- 樱花飘落动画层 -->
+    <div class="sakura-container" id="sakuraContainer"></div>
+
+    <!-- 内容层 -->
+    <div class="content">
+        <h1>樱花烂漫</h1>
+        <p>春风拂过，樱花纷飞，落满温柔的时光</p>
+        <p style="margin-top: 15px; font-size: 1.2rem;">🌸 唯美背景 · 樱花飘落 🌸</p>
+    </div>
+
+    <script>
+        // 生成樱花飘落动画
+        function createSakura() {
+        const container = document.getElementById('sakuraContainer');
+        const sakuraCount = window.innerWidth < 768 ? 30 : 60; // 移动端减少数量
+
+        for (let i = 0; i < sakuraCount; i++) {
+        const sakura = document.createElement('div');
+        sakura.className = 'sakura';
+
+        // 随机位置与大小
+        const left = Math.random() * 100;
+        const size = Math.random() * 10 + 5; // 5-15px
+        const duration = Math.random() * 15 + 10; // 10-25s
+        const delay = Math.random() * 10; // 0-10s延迟
+
+        // 设置样式
+        sakura.style.left = `${left}%`;
+        sakura.style.width = `${size}px`;
+        sakura.style.height = `${size}px`;
+        sakura.style.animationDuration = `${duration}s`;
+        sakura.style.animationDelay = `${delay}s`;
+
+        // 随机颜色深浅
+        const opacity = Math.random() * 0.5 + 0.5;
+        const red = Math.floor(Math.random() * 40 + 210);
+        const green = Math.floor(Math.random() * 20 + 190);
+        const blue = Math.floor(Math.random() * 30 + 220);
+        sakura.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
+        sakura.style.opacity = opacity;
+
+        container.appendChild(sakura);
+        }
+        }
+
+        // 页面加载完成后生成樱花
+        window.addEventListener('load', createSakura);
+        // 窗口大小变化时重新生成（适配响应式）
+        window.addEventListener('resize', () => {
+        document.getElementById('sakuraContainer').innerHTML = '';
+        createSakura();
+        });
+    </script>
 </body>
 </html>
