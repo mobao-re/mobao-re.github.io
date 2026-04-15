@@ -3,31 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>樱花</title>
     <style>
         * {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            box-sizing: border-box
         }
 
-        body, html {
+        html, body {
             height: 100%;
-            overflow: hidden;
+            overflow: hidden
         }
 
-        /* 高清山水樱花背景 */
-        .bg {
+        .background {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: url('https://pic.16pic.com/sucai/2020/16pic_2020601_s.jpg') center/cover no-repeat;
-            z-index: -2;
+            width: 100%;
+            height: 100%;
+            background: url("https://images.unsplash.com/photo-1559510014-b9174ff62dc5") center/cover no-repeat;
+            z-index: -1;
         }
 
-        /* 樱花飘落容器 */
         #sakura {
             position: fixed;
             top: 0;
@@ -35,80 +32,60 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 99;
         }
 
-        /* 花瓣样式 */
         .petal {
             position: absolute;
-            background: #ffb6c1;
-            border-radius: 150% 0 150% 150%;
-            opacity: 0.8;
+            background: #ffdae3;
+            border-radius: 50% 0 50% 50%;
+            opacity: .75;
             animation: fall linear infinite;
         }
 
-        /* 飘落动画 */
         @keyframes fall {
             0% {
-                transform: translateY(-10vh) rotate(0deg) scale(0.8);
-                opacity: 0;
+                transform: translateY(-10vh) rotate(0deg);
+                opacity: 0
             }
 
             10% {
-                opacity: 1;
+                opacity: .85
             }
 
             90% {
-                opacity: 1;
+                opacity: .85
             }
 
             100% {
-                transform: translateY(100vh) rotate(720deg) scale(1.2);
-                opacity: 0;
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0
             }
         }
     </style>
 </head>
-
 <body>
-    <div class="bg"></div>
+    <div class="background"></div>
     <div id="sakura"></div>
-
     <script>
-        // 樱花飘落生成
-        function sakura() {
-        const container = document.getElementById('sakura');
-        const count = window.innerWidth < 768 ? 40 : 70;
-        container.innerHTML = '';
-
-        for (let i = 0; i < count; i++) {
-        const petal = document.createElement('div');
-        petal.className = 'petal';
-
-        // 随机大小、位置、速度
-        const size = Math.random() * 12 + 6;
-        const left = Math.random() * 100;
-        const dur = Math.random() * 15 + 10;
-        const delay = Math.random() * 15;
-
-        petal.style.width = size + 'px';
-        petal.style.height = size + 'px';
-        petal.style.left = left + '%';
-        petal.style.animationDuration = dur + 's';
-        petal.style.animationDelay = delay + 's';
-
-        // 粉色深浅随机
-        const r = Math.floor(Math.random() * 40) + 220;
-        const g = Math.floor(Math.random() * 30) + 180;
-        const b = Math.floor(Math.random() * 30) + 210;
-        petal.style.backgroundColor = `rgb(${r},${g},${b})`;
-
-        container.appendChild(petal);
+        function createSakura(){
+        const s=document.getElementById('sakura');
+        s.innerHTML='';
+        const c=innerWidth<768?40:70;
+        for(let i=0;i<c;i++){
+        const p=document.createElement('div');
+        p.className='petal';
+        const size=Math.random()*12+6;
+        p.style.width=p.style.height=size+'px';
+        p.style.left=Math.random()*100+'%';
+        p.style.animationDuration=(Math.random()*15+10)+'s';
+        p.style.animationDelay=(Math.random()*15)+'s';
+        const r=255,g=Math.floor(Math.random()*60+180),b=Math.floor(Math.random()*60+200);
+        p.style.backgroundColor=`rgb(${r},${g},${b})`;
+        s.appendChild(p);
         }
         }
-
-        window.addEventListener('load', sakura);
-        window.addEventListener('resize', sakura);
+        window.addEventListener('load',createSakura);
+        window.addEventListener('resize',createSakura);
     </script>
 </body>
 </html>
